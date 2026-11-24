@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0a0714" />
+    <title>FamilyFink · Painel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23ff4d9d'/%3E%3Ctext x='32' y='45' font-family='Arial Black,Arial' font-size='34' font-weight='900' fill='%230a0714' text-anchor='middle'%3EF%3C/text%3E%3C/svg%3E" />
+</head>
+<body>
+    <div class="orbs" aria-hidden="true">
+        <span class="orb orb-a"></span>
+        <span class="orb orb-b"></span>
+        <span class="orb orb-c"></span>
+        <span class="grid"></span>
+    </div>
+
+    <div class="shell">
+        <aside class="sidebar" id="sidebar">
+            <a class="brand" href="/painel">
+                <span class="brand-mark">F</span>
+                <span class="brand-text">
+                    <strong>Family<span>Fink</span></strong>
+                    <small>painel de controle</small>
+                </span>
+            </a>
+
+            <nav class="nav" aria-label="Navegação">
+                <button class="nav-btn is-active" data-view="overview">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></svg>
+                    <span>Visão geral</span>
+                </button>
+                <button class="nav-btn" data-view="devices">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="3"/><path d="M8 21h8M12 17v4"/></svg>
+                    <span>Dispositivos</span>
+                    <em class="nav-count" id="navDevices">0</em>
+                </button>
+                <button class="nav-btn" data-view="records">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+                    <span>Registros</span>
+                </button>
+            </nav>
+
+            <div class="side-card">
+                <div class="side-status">
+                    <span class="pulse-dot" id="statusDot"></span>
+                    <div>
+                        <strong id="statusText">Conectando…</strong>
+                        <small id="statusSub">falando com a API</small>
+                    </div>
+                </div>
+                <div class="side-meta">
+                    <div><span>Atualizado</span><strong id="updatedAt">—</strong></div>
+                    <div><span>Auto-refresh</span><strong>30s</strong></div>
+                </div>
+            </div>
+
+            <div class="side-foot">
+                <span class="mini-logo">FF</span>
+                <p>FamilyFink <em>v1.0</em><br /><small>Monitoramento familiar</small></p>
+            </div>
+        </aside>
+
+        <div class="scrim" id="scrim"></div>
+
+        <main class="main">
+            <header class="topbar">
+                <button class="icon-btn menu-btn" id="menuBtn" aria-label="Abrir menu">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+
+                <div class="page-heading">
+                    <h1 id="viewTitle">Visão geral</h1>
+                    <p id="viewSub">Tudo o que a família anda aprontando nos dispositivos.</p>
+                </div>
+
+                <div class="topbar-actions">
+                    <button class="btn" id="refreshBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+                        <span>Atualizar</span>
+                    </button>
+                    <span class="live-pill"><span class="dot"></span>ao vivo</span>
+                </div>
+            </header>
+
+            <!-- VISÃO GERAL -->
+            <section class="view is-active" id="view-overview">
+                <div class="stats-grid">
+                    <article class="stat-card" style="--accent:#46e0ff">
+                        <div class="stat-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="3"/><path d="M8 21h8M12 17v4"/></svg>
+                        </div>
+                        <div class="stat-body">
+                            <span class="stat-label">Dispositivos</span>
+                            <strong class="stat-value" id="statDevices">0</strong>
+                            <small class="stat-foot">monitorados agora</small>
+                        </div>
+                    </article>
+
+                    <article class="stat-card" style="--accent:#8b5cff">
+                        <div class="stat-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H7l-3 3z"/><path d="M8 8h8M8 12h5"/></svg>
+                        </div>
+                        <div class="stat-body">
+                            <span class="stat-label">Relatórios</span>
+                            <strong class="stat-value" id="statReports">0</strong>
+                            <small class="stat-foot">pacotes recebidos</small>
+                        </div>
+                    </article>
+
+                    <article class="stat-card" style="--accent:#ff4d9d">
+                        <div class="stat-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/><path d="M3 18l9 5 9-5" opacity=".55"/></svg>
+                        </div>
+                        <div class="stat-body">
+                            <span class="stat-label">Registros</span>
+                            <strong class="stat-value" id="statRecords">0</strong>
+                            <small class="stat-foot">eventos capturados</small>
+                        </div>
+                    </article>
+
+                    <article class="stat-card" style="--accent:#ffcf5c">
+                        <div class="stat-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg>
+                        </div>
+                        <div class="stat-body">
+                            <span class="stat-label">Últimas 24h</span>
+                            <strong class="stat-value" id="statLast24">0</strong>
+                            <small class="stat-foot">novos eventos</small>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="grid-charts">
+                    <article class="panel chart-panel">
+                        <header class="panel-head">
+                            <div>
+                                <h2>Atividade</h2>
+                                <p>Registros por dia · últimos 14 dias</p>
+                            </div>
+                            <span class="chip chip-soft">diário</span>
+                        </header>
+                        <div class="bars" id="dailyChart" aria-label="Gráfico de atividade diária"></div>
+                    </article>
+
+                    <article class="panel donut-panel">
+                        <header class="panel-head">
+                            <div>
+                                <h2>Por tipo</h2>
+                                <p>Distribuição dos registros</p>
+                            </div>
+                        </header>
+                        <div class="donut-wrap">
+                            <svg class="donut" viewBox="0 0 200 200" role="img" aria-label="Distribuição por tipo">
+                                <circle class="donut-track" cx="100" cy="100" r="70" />
+                                <g id="donutSegments" transform="rotate(-90 100 100)"></g>
+                                <text x="100" y="94" class="donut-total" id="donutTotal">0</text>
+                                <text x="100" y="118" class="donut-caption">registros</text>
+                            </svg>
+                            <div class="donut-legend" id="donutLegend"></div>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="grid-lists">
+                    <article class="panel">
+                        <header class="panel-head">
+                            <div>
+                                <h2>Dispositivos</h2>
+                                <p>Quem está enviando dados</p>
+                            </div>
+                            <button class="link-btn" data-goto="devices">ver todos →</button>
+                        </header>
+                        <div class="mini-list" id="overviewDevices"></div>
+                    </article>
+
+                    <article class="panel">
+                        <header class="panel-head">
+                            <div>
+                                <h2>Atividade recente</h2>
+                                <p>Últimos registros recebidos</p>
+                            </div>
+                            <button class="link-btn" data-goto="records">ver todos →</button>
+                        </header>
+                        <div class="mini-list" id="recentRecords"></div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- DISPOSITIVOS -->
+            <section class="view" id="view-devices">
+                <article class="panel">
+                    <header class="panel-head">
+                        <div>
+                            <h2>Dispositivos <span class="chip" id="devicesCount">0</span></h2>
+                            <p>Cada aparelho que já enviou algum relatório</p>
+                        </div>
+                        <label class="search">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+                            <input id="deviceSearch" type="search" placeholder="Filtrar por ID do dispositivo" autocomplete="off" />
+                        </label>
+                    </header>
+                    <div class="device-grid" id="devicesGrid"></div>
+                </article>
+            </section>
+
+            <!-- REGISTROS -->
+            <section class="view" id="view-records">
+                <article class="panel filter-panel">
+                    <div class="filter-row">
+                        <label class="fld">
+                            <span>Dispositivo</span>
+                            <select id="filterDevice"></select>
+                        </label>
+                        <label class="fld grow">
+                            <span>Buscar</span>
+                            <span class="search inside">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+                                <input id="recordSearch" type="search" placeholder="App, site, título, conteúdo do payload…" autocomplete="off" />
+                            </span>
+                        </label>
+                    </div>
+                    <div class="type-filters" id="typeFilters"></div>
+                </article>
+
+                <div class="records-head">
+                    <p id="recordsSummary">Carregando registros…</p>
+                    <button class="btn primary" id="loadMoreBtn" hidden>Carregar mais</button>
+                </div>
+
+                <div class="records-list" id="recordsList"></div>
+            </section>
+        </main>
+    </div>
+
+    <div class="modal" id="modal" hidden>
+        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <header class="modal-head">
+                <div>
+                    <span class="modal-kind" id="modalKind">registro</span>
+                    <h3 id="modalTitle">Detalhes</h3>
+                    <p id="modalMeta"></p>
+                </div>
+                <button class="icon-btn" id="modalClose" aria-label="Fechar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                </button>
+            </header>
+            <div class="modal-body">
+                <div class="kv-grid" id="modalKv"></div>
+                <div class="json-box">
+                    <div class="json-head"><span>payload.json</span><button class="copy-btn" id="copyJson">copiar</button></div>
+                    <pre id="modalJson"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast" role="status"></div>
+
+    <script src="./app.js"></script>
+</body>
+</html>
